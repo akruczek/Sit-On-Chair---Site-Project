@@ -30,6 +30,107 @@ html {
   }
 }
 
+//KÓŁKA NAD NOTKAMI Z CENNIKIEM
+@mixin rounds($bigRoundColor, $bigRoundBorder, $smallRoundColor) {
+  &::before {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+    width: 57px;
+    height: 57px;
+    background-color: $bigRoundColor;
+    border: 2px $bigRoundBorder solid;
+    border-radius: 50%;
+    left: 41%;
+    top: -8%;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    background-color: $smallRoundColor;
+    border-radius: 50%;
+    left: 45.5%;
+    top: -5%;
+  }
+}
+
+//KÓŁKO Z CENĄ
+@mixin priceRound($hColor, $roundBorder, $textColor) {
+  h2 {
+    color: $hColor;
+    text-align: center;
+    margin-top: -15px;
+    margin-bottom: 29px;
+    font-weight: 400;
+    font-size: 26px;
+  }
+
+  .price {
+    font-size: 16px;
+    font-weight: 700;
+    width: 127px;
+    height: 127px;
+    background-color: white;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 2px $roundBorder solid;
+    color: $textColor;
+    margin-left: 31%;
+    margin-top: 5%;
+    padding-top: 28px;
+    padding-left: 12px;
+    text-align: center;
+    p:first-of-type {
+      font-size: 45px;
+      margin-bottom: 7px;
+      sup {
+        vertical-align: super;
+        font-size: 16px;
+      }
+    }
+    p:last-of-type { margin-right: 10px; }
+  }
+}
+
+//OPCJE ZWIĄZANE Z WYBRANYM PLANEM
+@mixin options($color1, $color2) {
+  .options {
+    margin-bottom: 20px;
+    .option:first-of-type { margin-top: 30px; }
+    .option:nth-of-type(2n-1) { background-color: $color1; }
+    .option:nth-of-type(2n) { background-color: $color2 }
+    .option {
+      color: #9e9e9e;
+      font-size: 24px;
+      font-weight: 400;
+      width: 320px;
+      margin-left: 3px;
+      height: 26px;
+      text-align: center;
+      padding: 10px 0;
+    }
+  }
+}
+
+//PRZYCISKI (WYBÓR PLANU)
+@mixin buttons($color1, $color2, $i) {
+  button {
+    position: absolute;
+    width: 122px;
+    height: 34px;
+    background-color: $color1;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: $color2;
+    margin-left: 105px;
+    margin-top: 100px - (($i - 1) * 50) - ((3 - $i) * 5);
+  }
+}
+
 //SEKCJA BODY
 body {
 
@@ -115,7 +216,6 @@ body {
               position: absolute;
               height: 25px;
               width: 120px;
-              // border: 1px solid yellow;
               margin-top: -120px;
             }
             li {
@@ -207,7 +307,7 @@ body {
     //SEKCJA ZE ZDJĘCIAMI
     .image-main {
       background-color: white;
-      height: 500px;
+      height: 355px;
       .content-container {
         display: flex;
         flex-direction: row;
@@ -232,29 +332,18 @@ body {
           @include colorLine(138px, 7px);
         }
 
-        .image-box1 {
-          display: flex;
-          background-image: url("../images/box1_img.jpg");
-          width: 330px;
-          height: 225px;
-          border: 1px grey solid;
-          &:hover {
-            .image-title:first-of-type {
-              animation: showMenu 0.75s reverse;
-              opacity: 0;
-            }
-          }
-        }
-
-        .image-box2 {
-          background-image: url("../images/box2_img.jpg");
-          width: 329px;
-          height: 225px;
-          border: 1px grey solid;
-          &:hover {
-            .image-title:first-of-type {
-              animation: showMenu 0.75s reverse;
-              opacity: 0;
+        //ZDJĘCIA (image-box)
+        @for $i from 1 through 2 {
+          .image-box#{$i} {
+            background-image: url(../images/box#{$i}_img.jpg);
+            width: 330px;
+            height: 225px;
+            border: 1px grey solid;
+            &:hover {
+              .image-title:first-of-type {
+                animation: showMenu 0.75s reverse;
+                opacity: 0;
+              }
             }
           }
         }
@@ -265,7 +354,6 @@ body {
           border: 1px grey solid;
           .article-box-content {
             padding: 28px 10px 0 28px;
-
             h3 {
               font-size: 16px;
               font-weight: 600;
@@ -293,7 +381,53 @@ body {
       width: 100%;
       background-color: lightgrey;
       .content-container {
+        h2 {
+          font-size: 22px;
+          font-weight: 500;
+          text-transform: uppercase;
+          color: #575757;
+          margin-bottom: 8px;
+          padding-top: 45px;
+        }
+
         @include colorLine(320px, 8px);
+
+        .prices-notes {
+          display: flex;
+          justify-content: space-between;
+          padding-top: 75px;
+          width: 1045px;
+          .note {
+            width: 326px;
+            height: 497px;
+            position: relative;
+          }
+
+          @for $i from 1 to 4 {
+            .note:nth-of-type(#{$i}) {
+
+              //BASCI PLAN & ADVANCE PLAN
+              @if ($i != 2) {
+                background-color: #f6f6f6;
+                border: 2px #c0c0c0 solid;
+                @include rounds(#f6f6f6, #c0c0c0, #c0c0c0);
+                @include priceRound(#27c7ab, #c0c0c0, #c0c0c0);
+                @include options(#e1e1e1, #eeeeee);
+                @include buttons(#27c7ab, white, $i);
+              }
+
+              //STANDARD PLAN
+              @else {
+                background-color: #27c7ab;
+                border: 2px #27c7ab solid;
+                @include rounds(#27c7ab, #27c7ab, #f6f6f6);
+                @include priceRound(white, #27c7ab, #27c7ab);
+                @include options(white, #eeeeee);
+                @include buttons(white, #27c7ab, $i);
+              }
+            }
+          }
+        }
       }
     }
 
@@ -303,11 +437,19 @@ body {
       height: 1000px;
       background-color: white;
       .content-container {
+        h2 {
+          font-size: 22px;
+          font-weight: 500;
+          text-transform: uppercase;
+          color: #575757;
+        }
         @include colorLine(320px, 8px);
       }
     }
    }
  }
+
+//ANIMACJE
 
 @keyframes showMenu {
   0% { opacity: 0; }
