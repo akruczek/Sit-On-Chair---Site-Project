@@ -216,6 +216,7 @@ body {
         padding-top: 31px;
         margin-left: 65px;
         width: 1050px;
+
         .image-title {
           box-sizing: border-box;
           width: 355px;
@@ -230,31 +231,49 @@ body {
           }
           @include colorLine(138px, 7px);
         }
+
         .image-box1 {
           display: flex;
           background-image: url("../images/box1_img.jpg");
           width: 330px;
           height: 225px;
           border: 1px grey solid;
+          &:hover {
+            .image-title:first-of-type {
+              animation: showMenu 0.75s reverse;
+              opacity: 0;
+            }
+          }
         }
+
         .image-box2 {
           background-image: url("../images/box2_img.jpg");
           width: 329px;
           height: 225px;
           border: 1px grey solid;
+          &:hover {
+            .image-title:first-of-type {
+              animation: showMenu 0.75s reverse;
+              opacity: 0;
+            }
+          }
         }
+
         .article-box {
           width: 338px;
           height: 252px;
           border: 1px grey solid;
           .article-box-content {
             padding: 28px 10px 0 28px;
+
             h3 {
               font-size: 16px;
               font-weight: 600;
               margin-bottom: 3px;
             }
+
             @include colorLine(138px, 7px);
+
             p {
               margin-top: 17px;
               line-height: 20.3px;
@@ -264,6 +283,27 @@ body {
             }
           }
         }
+
+      }
+    }
+
+    //SEKCJA Z CENNIKIEM
+    .prices-section {
+      height: 725px;
+      width: 100%;
+      background-color: lightgrey;
+      .content-container {
+        @include colorLine(320px, 8px);
+      }
+    }
+
+    //SEKCJA Z FORMULARZEM
+    .form-section {
+      width: 100%;
+      height: 1000px;
+      background-color: white;
+      .content-container {
+        @include colorLine(320px, 8px);
       }
     }
    }
@@ -272,6 +312,10 @@ body {
 @keyframes showMenu {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+@keyframes hide {
+  display: none;
 }
 
 .changeColor { animation: changeColor 1s alternate infinite; }
