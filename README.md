@@ -1,2 +1,2 @@
-# Sit-On-Chair---Site-Project
-Sit On Chair
+# Site-Project---Sit-on-chair
+Sit on chair Site
