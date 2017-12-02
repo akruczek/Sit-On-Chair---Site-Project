@@ -17,6 +17,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var dropDownListElements = [[]];
   for (var i=0; i<3; i++)
     dropDownListElements[i] = dropDownLists[i].querySelectorAll("a");
+  var panelLeft = document.querySelector(".panel_left");
+  var panelRight = document.querySelector(".panel_right");
+  var checkboxTransport = document.getElementById("transport");
+  var prices = [[150, 200, 300], [0, 0, 0], [0, 100], [80]];
+  var choosenPrices = [0, 0, 0, 0];
+  var priceSum = document.querySelector(".sum");
 
 // KOLORY PO NAJECHANIU I ROZWIJANE MENU[?], CHECKBOX[?]
 
@@ -169,8 +175,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   }
 
+  //FUNKCJA ZMIENIAJĄCA ODPOWIEDNIE WARTOŚCI PO WYBRANIU OPCJI
+  function SET_INNER_HTML(optionName, elementName, listId, elementId) {
+    if (elementName === "title")  panelLeft.querySelector("." + elementName).innerHTML = "Chair " + optionName;
+    else  panelLeft.querySelector("." + elementName).innerHTML = optionName;
+
+    choosenPrices[listId] = prices[listId][elementId];
+    panelRight.querySelector("." + elementName).innerHTML = prices[listId][elementId] + " zł";
+    dropDownLists[listId].querySelector(".list_label").innerHTML = optionName;
+    dropDownLists[listId].querySelector(".list_panel").style.display = "none";
+  }
+
+  //FUNKCJA SUMUJĄCA CENY WYBRANYCH OPCJI
+  function SUM_UP() {
+    var sum = 0;
+    for (var i=0; i<choosenPrices.length; i++) {
+      sum += choosenPrices[i];
+    }
+    priceSum.innerHTML = sum + " zł";
+  }
+
   //WYBÓR OPCJI Z ROZWIJANEJ LISTY
-  for (var k=0; k<3; k++) {
+  for (var k=0; k<4; k++) {
     switch(k) {
       //RODZAJ
       case 0:
@@ -178,15 +204,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
           dropDownListElements[k][l].addEventListener("click", function(event) {
             switch(this.textContent) {
               case "Clair":
-                console.log("Wybrano Clair");
-                break;
+                SET_INNER_HTML(this.textContent, "title", 0, 0); break;
               case "Margarita":
-                console.log("Wybrano Margarite");
-                break;
+                SET_INNER_HTML(this.textContent, "title", 0, 1); break;
               case "Selena":
-                console.log("Wybrano Selene");
-                break;
+                SET_INNER_HTML(this.textContent, "title", 0, 2); break;
             }
+            SUM_UP();
           });
         }
         break;
@@ -196,15 +220,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
           dropDownListElements[k][m].addEventListener("click", function(event) {
             switch(this.textContent) {
               case "Czerwony":
-                console.log("Wybrano Czerwony");
-                break;
+                SET_INNER_HTML(this.textContent, "color", 1, 0); break;
               case "Czarny":
-                console.log("Wybrano Czarny");
-                break;
+                SET_INNER_HTML(this.textContent, "color", 1, 1); break;
               case "Pomarańczowy":
-                console.log("Wybrano Pomarańczowy");
-                break;
+                SET_INNER_HTML(this.textContent, "color", 1, 2); break;
             }
+            SUM_UP();
           });
         }
         break;
@@ -214,14 +236,29 @@ document.addEventListener("DOMContentLoaded", function(event) {
           dropDownListElements[k][n].addEventListener("click", function(event) {
             switch(this.textContent) {
               case "Tkanina":
-                console.log("Wybrano Tkanine");
-                break;
+                SET_INNER_HTML(this.textContent, "pattern", 2, 0); break;
               case "Skóra":
-                console.log("Wybrano skóre");
-                break;
+                SET_INNER_HTML(this.textContent, "pattern", 2, 1); break;
             }
+            SUM_UP();
           });
         }
+        break;
+      //TRANSPORT
+      case 3:
+        checkboxTransport.addEventListener("click", function(event) {
+          if (this.checked) {
+            panelLeft.querySelector(".transport").innerHTML = "Transport";
+            panelRight.querySelector(".transport").innerHTML = prices[3][0] + " zł";
+            choosenPrices[3] = prices[3][0];
+          }
+          else {
+            panelLeft.querySelector(".transport").innerHTML = "";
+            panelRight.querySelector(".transport").innerHTML = "";
+            choosenPrices[3] = 0;
+          }
+          SUM_UP();
+        });
         break;
     }
   }
