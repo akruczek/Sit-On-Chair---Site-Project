@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var arrow_right = document.querySelector(".right_arrow");
   var slideId = 3;  //ID AKTUALNIE WIDOCZENGO SLAJDU
   var checkbox = document.getElementById("checkbox1");
+  var dropDownLists = document.querySelectorAll(".drop_down_list");
+  var dropDownListOpen = [false, false ,false];
+  var dropDownListElements = [[]];
+  for (var i=0; i<3; i++)
+    dropDownListElements[i] = dropDownLists[i].querySelectorAll("a");
 
 // KOLORY PO NAJECHANIU I ROZWIJANE MENU[?], CHECKBOX[?]
 
@@ -117,7 +122,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   function CHECK_SLIDERS() {
     for (var i=1; i<4; i++) {
-      console.log("fore");
       if (i == slideId) slider.querySelector(".slide:nth-of-type(" + i +")").style.display = "block";
       else slider.querySelector(".slide:nth-of-type(" + i + ")").style.display = "none";
     }
@@ -134,4 +138,92 @@ document.addEventListener("DOMContentLoaded", function(event) {
     changeSlide("runSlideRight", "runSlideFromLeft");
     event.preventDefault();
   });
+
+//----- \/ KALKULATOR \/
+
+  //ROZWINIĘCIE 1. LISTY
+  dropDownLists[0].querySelector(".list_arrow").addEventListener("click", function(event) { SET_LISTS(0); });
+
+  //ROZWINIĘCIE 2. LISTY
+  dropDownLists[1].querySelector(".list_arrow").addEventListener("click", function(event) { SET_LISTS(1); });
+
+  //ROZWINIĘCIE 3. LISTY
+  dropDownLists[2].querySelector(".list_arrow").addEventListener("click", function(event) { SET_LISTS(2); });
+
+  //FUNKCJA ODPOWIEDZIALNA ZA ROZWINIĘCIE LUB SCHOWANIE ODPOWIEDNICH LIST
+  function SET_LISTS(i) {
+    for (var j=0; j<3; j++) {
+      //ZAMYKA WSZYSKIE LISTY OPRÓCZ TEJ KTÓRĄ CHCEMY OTWORZYĆ
+      if (j === i) {
+        if (!dropDownListOpen[j]) dropDownListOpen[j] = true;
+        else dropDownListOpen[j] = false;
+      }
+      else
+        dropDownListOpen[j] = false;
+
+      //USTAWIENIE WIDOCZNOŚCI
+      if (!dropDownListOpen[j])
+        dropDownLists[j].querySelector(".list_panel").style.display = "none";
+      else
+        dropDownLists[j].querySelector(".list_panel").style.display = "block";
+    }
+  }
+
+  //WYBÓR OPCJI Z ROZWIJANEJ LISTY
+  for (var k=0; k<3; k++) {
+    switch(k) {
+      //RODZAJ
+      case 0:
+        for (var l=0; l<3; l++) {
+          dropDownListElements[k][l].addEventListener("click", function(event) {
+            switch(this.textContent) {
+              case "Clair":
+                console.log("Wybrano Clair");
+                break;
+              case "Margarita":
+                console.log("Wybrano Margarite");
+                break;
+              case "Selena":
+                console.log("Wybrano Selene");
+                break;
+            }
+          });
+        }
+        break;
+      //KOLOR
+      case 1:
+        for (var m=0; m<3; m++) {
+          dropDownListElements[k][m].addEventListener("click", function(event) {
+            switch(this.textContent) {
+              case "Czerwony":
+                console.log("Wybrano Czerwony");
+                break;
+              case "Czarny":
+                console.log("Wybrano Czarny");
+                break;
+              case "Pomarańczowy":
+                console.log("Wybrano Pomarańczowy");
+                break;
+            }
+          });
+        }
+        break;
+      //MATERIAŁ
+      case 2:
+        for (var n=0; n<2; n++) {
+          dropDownListElements[k][n].addEventListener("click", function(event) {
+            switch(this.textContent) {
+              case "Tkanina":
+                console.log("Wybrano Tkanine");
+                break;
+              case "Skóra":
+                console.log("Wybrano skóre");
+                break;
+            }
+          });
+        }
+        break;
+    }
+  }
+
 });
