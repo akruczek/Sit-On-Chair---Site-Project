@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var imageBox2 = document.querySelector(".image-box2");
   var imageTitle1 = imageBox1.querySelector(".image-title");
   var imageTitle2 = imageBox2.querySelector(".image-title");
-  var overOut = false; var slide = false;  //ZMIENNE POMOCNICZA
+  var overOut = [false, false]; var slide = false;  //ZMIENNE POMOCNICZA
   var slider = document.querySelector(".image-header").querySelector(".content-container");
   var arrow_left = document.querySelector(".left_arrow");
   var arrow_right = document.querySelector(".right_arrow");
@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var prices = [[150, 200, 300], [0, 0, 0], [0, 100], [80]];
   var choosenPrices = [0, 0, 0, 0];
   var priceSum = document.querySelector(".sum");
+  var choosenChairImage = document.querySelector(".image_part").querySelector("img");
 
 // KOLORY PO NAJECHANIU I ROZWIJANE MENU[?], CHECKBOX[?]
 
@@ -53,8 +54,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //USER ZABIERZE KURSOR ZE ZDJĘCIA ZANIM ZDĄŻY WYWOŁAĆ SIĘ display="none"
 
   //NIMACJA ZNIKANIA
-  function runHideMenu(element) {
-    overOut = false;
+  function runHideMenu(element, id) {
+    overOut[id] = false;
     //URUCHOMIENIE ANIMACJI ZANIKANIA POPRZEZ DODANIE KLASY ORAZ
     //PRZERWANIE ANIMACJI POJAWIANIA SIĘ (JEŚLI JEST AKTYWNA) POPRZEZ USUNIĘCIE KLASY
     element.classList.remove("runShowMenu");
@@ -62,14 +63,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //PO ZAKOŃCZENIU ANIMACJI USUNIĘCIE KLASY ODPOWIADAJĄCEJ ZA NIĄ ORAZ USTAWIENIE display="none"
     setTimeout(function() {
-      if (overOut == false) element.style.display = "none";
+      if (overOut[id] == false) element.style.display = "none";
       element.classList.remove("runHideMenu");
     }, 500);
   }
 
   //ANIMACJA POJAWIANIA SIĘ (ANALOGICZNIE)
-  function runShowMenu(element) {
-    overOut = true;
+  function runShowMenu(element, id) {
+    overOut[id] = true;
 
     element.style.display = "block";
     element.classList.remove("runHideMenu");
@@ -81,16 +82,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   imageBox1.addEventListener("mouseover", function(event) {
-    runHideMenu(imageTitle1); });
+    runHideMenu(imageTitle1, 0); });
 
   imageBox1.addEventListener("mouseout", function(event) {
-    runShowMenu(imageTitle1); });
+    runShowMenu(imageTitle1, 0); });
 
   imageBox2.addEventListener("mouseover", function(event) {
-    runHideMenu(imageTitle2); });
+    runHideMenu(imageTitle2, 1); });
 
   imageBox2.addEventListener("mouseout", function(event) {
-    runShowMenu(imageTitle2); });
+    runShowMenu(imageTitle2, 1); });
 
 //---- \/ ANIMACJE SLIDERA \/
   //PRZY SLIDERACH ZMIENNA POMOCNICZA ZABEZPIECZA PRZED PODWÓJNYM KLIKNIĘCIEM NA STRZAŁKĘ
@@ -167,16 +168,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
       else
         dropDownListOpen[j] = false;
 
-      //USTAWIENIE WIDOCZNOŚCI
-      if (!dropDownListOpen[j])
+      if (!dropDownListOpen[j]) {
         dropDownLists[j].querySelector(".list_panel").style.display = "none";
-      else
+      }
+      else {
         dropDownLists[j].querySelector(".list_panel").style.display = "block";
+        ROTATE_ARROW(j);
+      }
     }
   }
 
   //FUNKCJA ZMIENIAJĄCA ODPOWIEDNIE WARTOŚCI PO WYBRANIU OPCJI
   function SET_INNER_HTML(optionName, elementName, listId, elementId) {
+    //ANIMACJE
+    SHOW_ELEMENT(panelLeft.querySelector("." + elementName));
+    SHOW_ELEMENT(panelRight.querySelector("." + elementName));
+
     if (elementName === "title")  panelLeft.querySelector("." + elementName).innerHTML = "Chair " + optionName;
     else  panelLeft.querySelector("." + elementName).innerHTML = optionName;
 
@@ -188,11 +195,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   //FUNKCJA SUMUJĄCA CENY WYBRANYCH OPCJI
   function SUM_UP() {
+    //ANIMACJA
+    SHOW_ELEMENT(priceSum);
+
     var sum = 0;
     for (var i=0; i<choosenPrices.length; i++) {
       sum += choosenPrices[i];
     }
     priceSum.innerHTML = sum + " zł";
+  }
+
+  //ANIMACJA OBROTU STRZAŁKI
+  function ROTATE_ARROW(listId) {
+    dropDownLists[listId].querySelector(".list_arrow").classList.add("runRotate180");
+    setTimeout(function() { dropDownLists[listId].querySelector(".list_arrow").classList.remove("runRotate180"); }, 500);
+  }
+
+  //ANIMACJA POJAWIANIA SIĘ TEKSTU / ELEMENTU
+  function SHOW_ELEMENT(elementName) {
+    elementName.classList.add("runShowMenu");
+    setTimeout(function() { elementName.classList.remove("runShowMenu"); }, 300);
   }
 
   //WYBÓR OPCJI Z ROZWIJANEJ LISTY

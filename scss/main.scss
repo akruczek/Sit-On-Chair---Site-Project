@@ -871,7 +871,7 @@ body {
   100% { opacity: 0; }
 }
 
-@keyframes changeColor () {
+@keyframes changeColor {
   0% { color: white; }
   100% { color: #27c7ab; }
 }
@@ -908,6 +908,10 @@ body {
   100% { margin-left: 0; }
 }
 
+@keyframes rotate180 {
+  100% { transform: rotate(360deg); }
+}
+
 .runShowMenu { animation: showMenu 0.5s; }
 
 .runHideMenu { animation: hideMenu 0.5s; }
@@ -923,3 +927,5 @@ body {
 .runSlideFromLeft { animation: slideFromLeft 0.5s; }
 
 .runSlideFromRight { animation: slideFromRight 0.5s; }
+
+.runRotate180 { animation: rotate180 0.5s; }
