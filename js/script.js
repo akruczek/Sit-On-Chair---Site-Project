@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var arrow_left = document.querySelector(".left_arrow");
   var arrow_right = document.querySelector(".right_arrow");
   var slideId = 3;  //ID AKTUALNIE WIDOCZENGO SLAJDU
+  var wasSlided = false;  //ZMIENNA POMOCNICZA DO AUTO-SLIDERA
   var checkbox = document.getElementById("checkbox1");
   var dropDownLists = document.querySelectorAll(".drop_down_list");
   var dropDownListOpen = [false, false ,false];
@@ -136,15 +137,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   //LEWA STRZAŁKA
   arrow_left.addEventListener("click", function(event) {
+    wasSlided = true;
     changeSlide("runSlideLeft", "runSlideFromRight");
     event.preventDefault();
   });
 
   //PRAWA STRZAŁKA
   arrow_right.addEventListener("click", function(event) {
+    wasSlided = true;
     changeSlide("runSlideRight", "runSlideFromLeft");
     event.preventDefault();
   });
+
+  //TIMER DZIAŁAJĄCY W TLE, ZMIENIAJĄCY AUTOMATYCZNIE SLAJD CO KILKA SEKUND
+  //DOPÓKI SLAJD NIE ZOSTANIE ZMIENIONY RĘCZNIE PRZYNAJMNIEJ RAZ
+  setInterval(function() {
+    if (!wasSlided)   changeSlide("runSlideRight", "runSlideFromLeft");
+  }, 4000);
 
 //----- \/ KALKULATOR \/
 
