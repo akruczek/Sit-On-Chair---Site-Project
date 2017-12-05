@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+$(function() {
   var unwrapMenuOpenButton = document.querySelector(".menu-open");
   var unwrapMenu = document.querySelector(".unwrap-menu");
   var logo = document.querySelector(".logo");
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var priceSum = document.querySelector(".sum");
   var choosenChairImage = document.querySelector(".image_part").querySelector("img");
 
-// KOLORY PO NAJECHANIU I ROZWIJANE MENU[?], CHECKBOX[?]
 
 //----- \/ ANIMACJE ROZWIJANEGO MENU \/
   unwrapMenuOpenButton.addEventListener("mouseover", function(event) {
@@ -293,5 +292,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
         break;
     }
   }
-
 });
